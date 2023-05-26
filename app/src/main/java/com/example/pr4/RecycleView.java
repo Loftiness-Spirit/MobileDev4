@@ -74,24 +74,6 @@ public class RecycleView extends Fragment {
         recycleViewBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         CustomAdapter adapter =new CustomAdapter(getActivity(), mParam1);
         recycleViewBinding.recyclerView.setAdapter(adapter);
-        recycleViewBinding.recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-            @Override
-            public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
-                return false;
-            }
-
-            @Override
-            public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
-                Log.i("recycle","item touched");
-                Toast toast = Toast.makeText(getContext(),"item touched",Toast.LENGTH_SHORT);
-                toast.show();
-            }
-
-            @Override
-            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
-            }
-        });
         return recycleViewBinding.getRoot();
     }
     class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder>{
@@ -107,14 +89,7 @@ public class RecycleView extends Fragment {
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(getContext()).inflate(R.layout.item, parent, false);
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Log.i("recycle","item clicked");
-                    Toast toast = Toast.makeText(getContext(),"item clicked",Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-            });
+
             return new ViewHolder(view);
         }
 
@@ -122,6 +97,14 @@ public class RecycleView extends Fragment {
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             String item = items.get(position);
             holder.textView.setText(item);
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.i("recycle","item clicked");
+                    Toast toast = Toast.makeText(getContext(),"item" + (holder.getAdapterPosition()+1) + "clicked",Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
         }
 
         @Override
